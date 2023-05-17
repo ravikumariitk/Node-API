@@ -25,7 +25,7 @@ app.post("/create", (req, res) => {
     res.send("Added Successfully!");
 });
 //Reading entry
-function addData(data) {
+function create_obj(data) {
     let A = {};
     if (data.Name != null) {
         A["Name"] = data.Name;
@@ -38,14 +38,14 @@ function addData(data) {
 }
 app.get("/read", (req, res) => {
 
-    let A = addData(req.query);
+    let A = create_obj(req.query);
     Student.find(A).then(function (lists) {
         res.send(lists)
     });
 })
 //Update
 app.post('/update', (req, res) => {
-    let oldData=addData(req.query);
+    let oldData=create_obj(req.query);
     let newData = { 
          Name: req.query.New_Name,
          Roll_no: req.query.New_Roll_no,
@@ -60,7 +60,7 @@ app.post('/update', (req, res) => {
 });
 //Deleting entry
 app.get("/delete", (req, res) => {
-    let A = addData(req.query);
+    let A = create_obj(req.query);
     if(A==={}) 
     {
         res.send("Invalid request!");
