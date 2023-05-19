@@ -22,10 +22,11 @@ exports.createStudent = (req, res) => {
 
 //Reading entry
 exports.readStudents = (req, res) => {
+  const { Name, Roll_no, Branch } = req.query;
   const filter = {};
-  if (Name) filter.Name = req.query.Name;
-  if (Roll_no) filter.Roll_no = req.query.Roll_no;
-  if (Branch) filter.Branch = req.query.Branch;
+  if (Name) filter.Name = Name;
+  if (Roll_no) filter.Roll_no = Roll_no;
+  if (Branch) filter.Branch = Branch;
 
   Student.find(filter)
     .then((students) => {
@@ -39,17 +40,19 @@ exports.readStudents = (req, res) => {
 
 // Updating student entry
 exports.updateStudent = (req, res) => {
+  const { Name, Roll_no, Branch, New_Name, New_Roll_no, New_Branch } =
+    req.query;
   // Old data
   const filter = {};
-  if (Name) filter.Name = req.query.Name;
-  if (Roll_no) filter.Roll_no = req.query.Roll_no;
-  if (Branch) filter.Branch = req.query.Branch;
+  if (Name) filter.Name = Name;
+  if (Roll_no) filter.Roll_no = Roll_no;
+  if (Branch) filter.Branch = Branch;
 
   // New Data
   const update = {};
-  if (New_Name) update.Name = req.query.New_Name;
-  if (New_Roll_no) update.Roll_no = req.query.New_Roll_no;
-  if (New_Branch) update.Branch = req.query.New_Branch;
+  if (New_Name) update.Name = New_Name;
+  if (New_Roll_no) update.Roll_no = rNew_Roll_no;
+  if (New_Branch) update.Branch = New_Branch;
 
   Student.updateMany(filter, update)
     .then(() => {
@@ -63,10 +66,11 @@ exports.updateStudent = (req, res) => {
 
 // Deleting entry
 exports.deleteStudent = (req, res) => {
+  const { Name, Roll_no, Branch } = req.query;
   const filter = {};
-  if (Name) filter.Name = req.query.Name;
-  if (Roll_no) filter.Roll_no = req.query.Roll_no;
-  if (Branch) filter.Branch = req.query.Branch;
+  if (Name) filter.Name = Name;
+  if (Roll_no) filter.Roll_no = Roll_no;
+  if (Branch) filter.Branch = Branch;
 
   if (filter == {}) {
     res.send("Invalid request!");
