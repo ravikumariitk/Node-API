@@ -7,8 +7,7 @@ exports.createStudent = (req, res) => {
   const Student1 = new Student({
     Name: req.query.Name,
     Roll_no: req.query.Roll_no,
-    Branch: req.query,
-    Branch,
+    Branch: req.query.Branch,
   });
 
   Student1.save()
