@@ -4,10 +4,12 @@ const Student = require("../models/Student");
 
 // Creating entry
 exports.createStudent = (req, res) => {
+  const { Name, Roll_no, Branch } = req.body;
+
   const Student1 = new Student({
-    Name: req.query.Name,
-    Roll_no: req.query.Roll_no,
-    Branch: req.query.Branch,
+    Name: Name,
+    Roll_no: Roll_no,
+    Branch: Branch,
   });
 
   Student1.save()
@@ -18,11 +20,13 @@ exports.createStudent = (req, res) => {
       console.error(err);
       res.send(err);
     });
+
+  console.log(req.body);
 };
 
 //Reading entry
 exports.readStudents = (req, res) => {
-  const { Name, Roll_no, Branch } = req.query;
+  const { Name, Roll_no, Branch } = req.body;
   const filter = {};
   if (Name) filter.Name = Name;
   if (Roll_no) filter.Roll_no = Roll_no;
@@ -41,7 +45,8 @@ exports.readStudents = (req, res) => {
 // Updating student entry
 exports.updateStudent = (req, res) => {
   const { Name, Roll_no, Branch, New_Name, New_Roll_no, New_Branch } =
-    req.query;
+    req.body;
+  
   // Old data
   const filter = {};
   if (Name) filter.Name = Name;
@@ -66,7 +71,7 @@ exports.updateStudent = (req, res) => {
 
 // Deleting entry
 exports.deleteStudent = (req, res) => {
-  const { Name, Roll_no, Branch } = req.query;
+  const { Name, Roll_no, Branch } = req.body;
   const filter = {};
   if (Name) filter.Name = Name;
   if (Roll_no) filter.Roll_no = Roll_no;
