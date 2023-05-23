@@ -5,10 +5,11 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const mongodb_url = process.env.MONGODB_URL;
 mongoose.connect(mongodb_url);
-
+const jwt = require('jsonwebtoken');
 const Student = require("./models/Student");
 
 const studentRoutes = require('./routes/studentRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Middleware to parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/', studentRoutes);
+app.use('/', userRoutes);
 
 const port = process.env.PORT; 
 app.listen(port, () => {

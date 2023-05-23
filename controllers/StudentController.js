@@ -21,7 +21,6 @@ exports.createStudent = (req, res) => {
       res.send(err);
     });
 
-  console.log(req.body);
 };
 
 //Reading entry
@@ -89,4 +88,5 @@ exports.deleteStudent = (req, res) => {
       console.error(err);
       res.send(err);
     });
+ 
 };
