@@ -16,7 +16,7 @@ exports.signin = (req, res) => {
         }
         else {
             const token = jwt.sign({ _id: data._id }, process.env.TOKEN_SECRET, {
-                expiresIn: 120 // expires in 60 minutes
+                expiresIn: 3600 // expires in 60 minutes
             });
             let new_data={};
             new_data['user']=filter.user;
@@ -55,7 +55,7 @@ exports.signup = (req, res) => {
               .then(() => {
                 let new_data={};
                 const token = jwt.sign({ _id: User1._id }, process.env.TOKEN_SECRET, {
-                    expiresIn: 120 // expires in 60 minutes
+                    expiresIn: 3600 // expires in 60 minutes
                 });
                 new_data['user']=User1.user;
                 new_data['password']=User1.password;
