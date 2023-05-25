@@ -16,13 +16,14 @@ exports.signin = (req, res) => {
         }
         else {
             const token = jwt.sign({ _id: data._id }, process.env.TOKEN_SECRET, {
-                expiresIn: 3600 // expires in 60 minutes
+                expiresIn: 120 // expires in 60 minutes
             });
             let new_data={};
             new_data['user']=filter.user;
             new_data['password']=filter.password;
             new_data['session_token']=token;
             User.updateOne(filter,new_data).then(() => {
+                res.cookie(`Session-Token`,token);
                 res.send("You have been logged in successfully your current session will be valid upto 60 minutes.");
               }).catch((err) => {
                 res.send(err);
@@ -54,12 +55,13 @@ exports.signup = (req, res) => {
               .then(() => {
                 let new_data={};
                 const token = jwt.sign({ _id: User1._id }, process.env.TOKEN_SECRET, {
-                    expiresIn: 3600 // expires in 60 minutes
+                    expiresIn: 120 // expires in 60 minutes
                 });
                 new_data['user']=User1.user;
                 new_data['password']=User1.password;
                 new_data['session_token']=token;
                 User.updateOne(User1, new_data).then(() => {
+                    res.cookie(`Session-Token`,token);
                     res.send("You have been signed up successfully your current session will be valid upto 60 minutes.");
                   })
                   .catch((err) => {
