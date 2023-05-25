@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+const cookieParser = require('cookie-parser')
+app.use(cookieParser());
+'use strict';
 const mongoose = require("mongoose");
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -7,7 +10,6 @@ const mongodb_url = process.env.MONGODB_URL;
 mongoose.connect(mongodb_url);
 const jwt = require('jsonwebtoken');
 const Student = require("./models/Student");
-
 const studentRoutes = require('./routes/studentRoutes');
 const userRoutes = require('./routes/userRoutes');
 
