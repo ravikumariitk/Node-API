@@ -1,11 +1,18 @@
 const User = require("../models/User");
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+//Hashing password
+function hashPassword(password, salt) {
+  const hash = crypto.createHash('sha256');
+  hash.update(password + salt); // Concatenate the password and salt
+  return hash.digest('hex'); // Return the hashed password as a hexadecimal string
+}
 //Sign In
 exports.signin = (req, res) => {
     const { user, password } = req.body;
     const filter = {};
     if (user) filter.user = user;
-    if (password) filter.password = password;
+    if (password) filter.password = hashPassword(password,process.env.SALT);
     if (filter == {}) {
         res.send("Invalid request!");
     }
@@ -24,7 +31,7 @@ exports.signin = (req, res) => {
             new_data['session_token']=token;
             User.updateOne(filter,new_data).then(() => {
                 res.cookie(`Session-Token`,token);
-                res.send("You have been logged in successfully your current session will be valid upto 60 minutes.");
+                res.send("You have been signed in successfully your current session will be valid upto 60 minutes.");
               }).catch((err) => {
                 res.send(err);
               });            
@@ -48,7 +55,7 @@ exports.signup = (req, res) => {
         else {
             const User1 = new User({
               user: filter.user,
-              password: req.body.password,
+              password: hashPassword(req.body.password,process.env.SALT),
               session_token:""
             });
             User1.save()
