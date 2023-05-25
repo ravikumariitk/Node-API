@@ -55,7 +55,7 @@ exports.updateStudent = (req, res) => {
   // New Data
   const update = {};
   if (New_Name) update.Name = New_Name;
-  if (New_Roll_no) update.Roll_no = rNew_Roll_no;
+  if (New_Roll_no) update.Roll_no = New_Roll_no;
   if (New_Branch) update.Branch = New_Branch;
 
   Student.updateMany(filter, update)

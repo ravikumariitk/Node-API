@@ -18,15 +18,18 @@ exports.signin = (req, res) => {
             const token = jwt.sign({ _id: data._id }, process.env.TOKEN_SECRET, {
                 expiresIn: 3600 // expires in 60 minutes
             });
-            res.json({
-                success: true,
-                message: "Enjoy your token!",
-                token: token
-            });
+            let new_data={};
+            new_data['user']=filter.user;
+            new_data['password']=filter.password;
+            new_data['session_token']=token;
+            User.updateOne(filter,new_data).then(() => {
+                res.send("You have been logged in successfully your current session will be valid upto 60 minutes.");
+              }).catch((err) => {
+                res.send(err);
+              });            
         }
     });
 }
-
 //SignUp
 exports.signup = (req, res) => {
     const { user, password } = req.body;
@@ -36,7 +39,6 @@ exports.signup = (req, res) => {
         res.send("Invalid request!");
     }
     User.findOne(filter, (err, data) => {
-        console.log(data)
         if (err) throw err;
         else if(data!=null)
         {
@@ -45,15 +47,27 @@ exports.signup = (req, res) => {
         else {
             const User1 = new User({
               user: filter.user,
-              password: filter.password,
+              password: req.body.password,
+              session_token:""
             });
-          
             User1.save()
               .then(() => {
-                res.send("User added successfully!");
+                let new_data={};
+                const token = jwt.sign({ _id: User1._id }, process.env.TOKEN_SECRET, {
+                    expiresIn: 3600 // expires in 60 minutes
+                });
+                new_data['user']=User1.user;
+                new_data['password']=User1.password;
+                new_data['session_token']=token;
+                User.updateOne(User1, new_data).then(() => {
+                    res.send("You have been signed up successfully your current session will be valid upto 60 minutes.");
+                  })
+                  .catch((err) => {
+                    
+                    res.send(err);
+                  });
               })
               .catch((err) => {
-                console.error(err);
                 res.send(err);
               });
         }
